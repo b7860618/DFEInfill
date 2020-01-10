@@ -1,0 +1,1164 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="VerifyTheAttachaments"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:p="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sd="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_strEmailsSubject" Type="InArgument(x:String)" />
+    <x:Property Name="out_strT6path" Type="OutArgument(x:String)" />
+    <x:Property Name="in_strTotalSumTemplate" Type="InArgument(x:String)" />
+    <x:Property Name="out_strValueDFET6" Type="OutArgument(x:String)" />
+    <x:Property Name="out_strQuantitiesDFE" Type="OutArgument(x:String)" />
+    <x:Property Name="in_strRegion" Type="InArgument(x:String)" />
+    <x:Property Name="out_strItems" Type="OutArgument(x:String)" />
+    <x:Property Name="out_strAdressValue" Type="OutArgument(x:String)" />
+    <x:Property Name="in_strPathToMails" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>VerifyTheAttachaments_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Collections.Immutable</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Flowchart sap2010:Annotation.AnnotationText="The VerifyTheAttachaments module has the role to see if the files contained by the email are excel or pdf &#xA;If files are excel or pdf verify if they are the correct files for the process&#xA;&#xA;&#xA;Arguments in: &#xA;-&gt; in_strEmailSubject&#xA;-&gt; in_strTotalSumTemplate&#xA;&#xA;Arguments out:&#xA;-&gt; out_strT6path" DisplayName="VerifyTheAttachaments" sap2010:WorkflowViewState.IdRef="Flowchart_1">
+    <Flowchart.Variables>
+      <Variable x:TypeArguments="s:String[]" Name="strT6adress" />
+      <Variable x:TypeArguments="x:Boolean" Name="boolIsExcel" />
+      <Variable x:TypeArguments="x:String" Name="strSheetName" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="strTotalDFET6" />
+      <Variable x:TypeArguments="sd:DataTable" Name="dtT6" />
+      <Variable x:TypeArguments="x:String" Name="strDtT6" />
+      <Variable x:TypeArguments="x:Double" Name="strTotalValueDFET6" />
+      <Variable x:TypeArguments="x:String" Name="strTextFromPdf" />
+    </Flowchart.Variables>
+    <Flowchart.StartNode>
+      <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_1">
+        <ui:LogMessage DisplayName="Start Message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;---Start the Verify the Attachaments module---&quot;]" />
+        <FlowStep.Next>
+          <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_2">
+            <Assign DisplayName="Assign strT6adress" sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="s:String[]">[strT6adress]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(in_strPathToMails)]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <FlowStep.Next>
+              <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_4">
+                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each File verify the extension" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[strT6adress]">
+                  <ui:ForEach.Body>
+                    <ActivityAction x:TypeArguments="x:String">
+                      <ActivityAction.Argument>
+                        <DelegateInArgument x:TypeArguments="x:String" Name="file" />
+                      </ActivityAction.Argument>
+                      <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_1">
+                        <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[file]" />
+                        <If Condition="[file.ToLower.Contains(&quot;.xlsx&quot;)]" DisplayName="If item is of type Excel" sap2010:WorkflowViewState.IdRef="If_1">
+                          <If.Then>
+                            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
+                              <Sequence.Variables>
+                                <Variable x:TypeArguments="ui:WorkbookApplication" Name="workbook" />
+                              </Sequence.Variables>
+                              <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="Read Excel Attachament" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" ReadOnly="True" Visible="False" Workbook="[workbook]" WorkbookPath="[file]">
+                                <ui:ExcelApplicationScope.Body>
+                                  <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                                    <ActivityAction.Argument>
+                                      <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                                    </ActivityAction.Argument>
+                                    <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                                      <Sequence.Variables>
+                                        <Variable x:TypeArguments="x:String" Name="strTextAtB2Cell" />
+                                        <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="listSheetsT6" />
+                                      </Sequence.Variables>
+                                      <Assign DisplayName="List of Sheets in T6" sap2010:WorkflowViewState.IdRef="Assign_12">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="scg:IEnumerable(x:String)">[listSheetsT6]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="scg:IEnumerable(x:String)">[workbook.GetSheets]</InArgument>
+                                        </Assign.Value>
+                                      </Assign>
+                                      <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each sheet in T6 file" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[listSheetsT6]">
+                                        <ui:ForEach.Body>
+                                          <ActivityAction x:TypeArguments="x:String">
+                                            <ActivityAction.Argument>
+                                              <DelegateInArgument x:TypeArguments="x:String" Name="sheets" />
+                                            </ActivityAction.Argument>
+                                            <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                                              <ui:ExcelReadCell Cell="B2" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_3" SheetName="[sheets]">
+                                                <ui:ExcelReadCell.Result>
+                                                  <OutArgument x:TypeArguments="x:String">[strTextAtB2Cell]</OutArgument>
+                                                </ui:ExcelReadCell.Result>
+                                              </ui:ExcelReadCell>
+                                              <If Condition="[strTextAtB2Cell.Trim.ToLower.Contains(&quot;virgin media - works order form&quot;)]" DisplayName="If text from xlsx file contains Contractor DFE request" sap2010:WorkflowViewState.IdRef="If_6">
+                                                <If.Then>
+                                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_11">
+                                                    <Assign DisplayName="The file is an Excel" sap2010:WorkflowViewState.IdRef="Assign_6">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:Boolean">[boolIsExcel]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <Assign DisplayName="Path to File" sap2010:WorkflowViewState.IdRef="Assign_9">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:String">[out_strT6path]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:String">[file]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <Assign sap2010:WorkflowViewState.IdRef="Assign_13">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:String">[strSheetName]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:String">[sheets]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <ui:Break sap2010:WorkflowViewState.IdRef="Break_1" />
+                                                  </Sequence>
+                                                </If.Then>
+                                              </If>
+                                            </Sequence>
+                                          </ActivityAction>
+                                        </ui:ForEach.Body>
+                                      </ui:ForEach>
+                                    </Sequence>
+                                  </ActivityAction>
+                                </ui:ExcelApplicationScope.Body>
+                              </ui:ExcelApplicationScope>
+                            </Sequence>
+                          </If.Then>
+                          <If.Else>
+                            <If Condition="[file.ToLower.Contains(&quot;.pdf&quot;)]" DisplayName="If item is of type PDF" sap2010:WorkflowViewState.IdRef="If_2">
+                              <If.Then>
+                                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
+                                  <Sequence DisplayName="Read PDF attachament" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                                    <ui:ReadPDFText DisplayName="Read PDF Text" FileName="[file]" sap2010:WorkflowViewState.IdRef="ReadPDFText_4" PreserveFormatting="True" Range="All" Text="[strTextFromPdf]" />
+                                    <If Condition="[strTextFromPdf.Trim.ToLower.Contains(&quot;contractor dfe request&quot;)]" DisplayName="If text from pdf file contains Contractor DFE request" sap2010:WorkflowViewState.IdRef="If_7">
+                                      <If.Then>
+                                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_12">
+                                          <Assign DisplayName="The file is not an Excel but a PDF" sap2010:WorkflowViewState.IdRef="Assign_7">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:Boolean">[boolIsExcel]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                          <Assign DisplayName="Path to File" sap2010:WorkflowViewState.IdRef="Assign_10">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:String">[out_strT6path]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:String">[file]</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                          <ui:Break sap2010:WorkflowViewState.IdRef="Break_2" />
+                                        </Sequence>
+                                      </If.Then>
+                                      <If.Else>
+                                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_17">
+                                          <Throw DisplayName="Throw E01 for PDF attachament not in correct state" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_6" />
+                                        </Sequence>
+                                      </If.Else>
+                                    </If>
+                                  </Sequence>
+                                </Sequence>
+                              </If.Then>
+                              <If.Else>
+                                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_7">
+                                  <If Condition="[file.ToLower.Contains(&quot;.xls&quot;)]" DisplayName="If item is of type XLS" sap2010:WorkflowViewState.IdRef="If_5">
+                                    <If.Then>
+                                      <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Read Excel Attachament" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" WorkbookPath="[out_strT6path]">
+                                        <ui:ExcelApplicationScope.Body>
+                                          <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                                            <ActivityAction.Argument>
+                                              <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                                            </ActivityAction.Argument>
+                                            <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                                              <Sequence.Variables>
+                                                <Variable x:TypeArguments="ui:GenericValue" Name="strTextAtB2Cell" />
+                                              </Sequence.Variables>
+                                              <ui:ExcelReadCell Cell="B2" DisplayName="Read Cell" sap2010:WorkflowViewState.IdRef="ExcelReadCell_4" SheetName="VWOCivil">
+                                                <ui:ExcelReadCell.Result>
+                                                  <OutArgument x:TypeArguments="ui:GenericValue">[strTextAtB2Cell]</OutArgument>
+                                                </ui:ExcelReadCell.Result>
+                                              </ui:ExcelReadCell>
+                                              <If Condition="[strTextAtB2Cell.Trim.ToLower.Contains(&quot;virgin media - works order form&quot;)]" DisplayName="If text from xls file contains Contractor DFE request" sap2010:WorkflowViewState.IdRef="If_8">
+                                                <If.Then>
+                                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_13">
+                                                    <Assign DisplayName="The file is an Excel" sap2010:WorkflowViewState.IdRef="Assign_8">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:Boolean">[boolIsExcel]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <Assign DisplayName="Path to File" sap2010:WorkflowViewState.IdRef="Assign_11">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:String">[out_strT6path]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:String">[file]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <ui:Break sap2010:WorkflowViewState.IdRef="Break_3" />
+                                                  </Sequence>
+                                                </If.Then>
+                                                <If.Else>
+                                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_19">
+                                                    <Throw DisplayName="Throw E01 for PDF attachament not in correct state" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_7" />
+                                                  </Sequence>
+                                                </If.Else>
+                                              </If>
+                                            </Sequence>
+                                          </ActivityAction>
+                                        </ui:ExcelApplicationScope.Body>
+                                      </ui:ExcelApplicationScope>
+                                    </If.Then>
+                                    <If.Else>
+                                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_21">
+                                        <Throw DisplayName="Throw E01 for missing the correct attachament" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
+                                      </Sequence>
+                                    </If.Else>
+                                  </If>
+                                </Sequence>
+                              </If.Else>
+                            </If>
+                          </If.Else>
+                        </If>
+                      </Sequence>
+                    </ActivityAction>
+                  </ui:ForEach.Body>
+                </ui:ForEach>
+                <FlowStep.Next>
+                  <FlowDecision x:Name="__ReferenceID3" Condition="[boolIsExcel]" DisplayName="Excel/Pdf" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+                    <FlowDecision.True>
+                      <FlowDecision x:Name="__ReferenceID11" Condition="[String.IsNullOrEmpty(strSheetName)]" DisplayName="Found correct sheet" sap2010:WorkflowViewState.IdRef="FlowDecision_4">
+                        <FlowDecision.True>
+                          <FlowStep x:Name="__ReferenceID12" sap2010:WorkflowViewState.IdRef="FlowStep_14">
+                            <Throw DisplayName="Throw E01 for unstructured template" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_14" />
+                          </FlowStep>
+                        </FlowDecision.True>
+                        <FlowDecision.False>
+                          <FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_5">
+                            <ui:ExcelApplicationScope Password="{x:Null}" CreateNewFile="False" DisplayName="T6 fie" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_4" ReadOnly="True" Visible="False" WorkbookPath="[out_strT6path]">
+                              <ui:ExcelApplicationScope.Body>
+                                <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                                  </ActivityAction.Argument>
+                                  <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                                    <ui:ExcelReadRange AddHeaders="False" DataTable="[dtT6]" DisplayName="Read Range" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="[strSheetName]">
+                                      <ui:ExcelReadRange.Range>
+                                        <InArgument x:TypeArguments="x:String">
+                                          <Literal x:TypeArguments="x:String" Value="" />
+                                        </InArgument>
+                                      </ui:ExcelReadRange.Range>
+                                    </ui:ExcelReadRange>
+                                  </Sequence>
+                                </ActivityAction>
+                              </ui:ExcelApplicationScope.Body>
+                            </ui:ExcelApplicationScope>
+                            <FlowStep.Next>
+                              <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_12">
+                                <Sequence DisplayName="Iterate throw T6 file" sap2010:WorkflowViewState.IdRef="Sequence_37">
+                                  <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[dtT6]" DisplayName="For Each Row in T6 verify the work address" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
+                                    <ui:ForEachRow.Body>
+                                      <ActivityAction x:TypeArguments="sd:DataRow">
+                                        <ActivityAction.Argument>
+                                          <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                                        </ActivityAction.Argument>
+                                        <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_40">
+                                          <Sequence.Variables>
+                                            <Variable x:TypeArguments="x:String" Name="strQuantityDFE" />
+                                            <Variable x:TypeArguments="x:String" Name="strValueDFET6" />
+                                            <Variable x:TypeArguments="x:String" Name="strItem" />
+                                            <Variable x:TypeArguments="x:String" Name="strWorkAddress" />
+                                          </Sequence.Variables>
+                                          <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="0" DisplayName="Get row Work Address" sap2010:WorkflowViewState.IdRef="GetRowItem_18" Row="[row]">
+                                            <ui:GetRowItem.Value>
+                                              <OutArgument x:TypeArguments="x:String">[strWorkAddress]</OutArgument>
+                                            </ui:GetRowItem.Value>
+                                          </ui:GetRowItem>
+                                          <If Condition="[String.IsNullOrWhiteSpace(strWorkAddress)]" DisplayName="If Work Address" sap2010:WorkflowViewState.IdRef="If_23">
+                                            <If.Else>
+                                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_39">
+                                                <If Condition="[strWorkAddress.Trim.ToLower.Contains(&quot;works address / location of work&quot;)]" sap2010:WorkflowViewState.IdRef="If_22">
+                                                  <If.Then>
+                                                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_38">
+                                                      <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="2" DisplayName="Get the value of Address" sap2010:WorkflowViewState.IdRef="GetRowItem_19" Row="[row]">
+                                                        <ui:GetRowItem.Value>
+                                                          <OutArgument x:TypeArguments="x:String">[out_strAdressValue]</OutArgument>
+                                                        </ui:GetRowItem.Value>
+                                                      </ui:GetRowItem>
+                                                      <If Condition="[String.IsNullOrEmpty(out_strAdressValue)]" DisplayName="If manage to find Address" sap2010:WorkflowViewState.IdRef="If_21">
+                                                        <If.Then>
+                                                          <Throw DisplayName="Throw E01 for unmatch Total DFE" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_13" />
+                                                        </If.Then>
+                                                        <If.Else>
+                                                          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_16" Level="Info" Message="[&quot;Adress is: &quot; + out_strAdressValue]" />
+                                                        </If.Else>
+                                                      </If>
+                                                      <ui:Break sap2010:WorkflowViewState.IdRef="Break_5" />
+                                                    </Sequence>
+                                                  </If.Then>
+                                                </If>
+                                              </Sequence>
+                                            </If.Else>
+                                          </If>
+                                        </Sequence>
+                                      </ActivityAction>
+                                    </ui:ForEachRow.Body>
+                                  </ui:ForEachRow>
+                                  <ui:ForEachRow CurrentIndex="{x:Null}" DataTable="[dtT6]" DisplayName="For Each Row in T6 verify for quantities and values and items" sap2010:WorkflowViewState.IdRef="ForEachRow_5">
+                                    <ui:ForEachRow.Body>
+                                      <ActivityAction x:TypeArguments="sd:DataRow">
+                                        <ActivityAction.Argument>
+                                          <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                                        </ActivityAction.Argument>
+                                        <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_44">
+                                          <Sequence.Variables>
+                                            <Variable x:TypeArguments="ui:GenericValue" Name="strQuantityDFE" />
+                                            <Variable x:TypeArguments="ui:GenericValue" Name="strValueDFET6" />
+                                            <Variable x:TypeArguments="ui:GenericValue" Name="strItem" />
+                                            <Variable x:TypeArguments="x:String" Name="strWorkAddress" />
+                                          </Sequence.Variables>
+                                          <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="12" DisplayName="Get row quantity DFE" sap2010:WorkflowViewState.IdRef="GetRowItem_20" Row="[row]">
+                                            <ui:GetRowItem.Value>
+                                              <OutArgument x:TypeArguments="ui:GenericValue">[strQuantityDFE]</OutArgument>
+                                            </ui:GetRowItem.Value>
+                                          </ui:GetRowItem>
+                                          <If Condition="[IsNumeric(strQuantityDFE) And Not (String.IsNullOrEmpty(strQuantityDFE))]" DisplayName="IsNumeric(strQuantityDFE)" sap2010:WorkflowViewState.IdRef="If_27">
+                                            <If.Then>
+                                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_46">
+                                                <If Condition="[Convert.ToDouble(strQuantityDFE.ToString) = 0]" DisplayName="If value of quantities is 0" sap2010:WorkflowViewState.IdRef="If_29">
+                                                  <If.Else>
+                                                    <If Condition="[String.IsNullOrEmpty(out_strQuantitiesDFE)]" DisplayName="List quantities is empty" sap2010:WorkflowViewState.IdRef="If_24">
+                                                      <If.Then>
+                                                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_41">
+                                                          <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="13" DisplayName="Get DFE line" sap2010:WorkflowViewState.IdRef="GetRowItem_21" Row="[row]">
+                                                            <ui:GetRowItem.Value>
+                                                              <OutArgument x:TypeArguments="ui:GenericValue">[strValueDFET6]</OutArgument>
+                                                            </ui:GetRowItem.Value>
+                                                          </ui:GetRowItem>
+                                                          <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="0" DisplayName="Get Item" sap2010:WorkflowViewState.IdRef="GetRowItem_22" Row="[row]">
+                                                            <ui:GetRowItem.Value>
+                                                              <OutArgument x:TypeArguments="ui:GenericValue">[strItem]</OutArgument>
+                                                            </ui:GetRowItem.Value>
+                                                          </ui:GetRowItem>
+                                                          <Assign sap2010:WorkflowViewState.IdRef="Assign_20">
+                                                            <Assign.To>
+                                                              <OutArgument x:TypeArguments="x:String">[out_strValueDFET6]</OutArgument>
+                                                            </Assign.To>
+                                                            <Assign.Value>
+                                                              <InArgument x:TypeArguments="x:String">[strValueDFET6]</InArgument>
+                                                            </Assign.Value>
+                                                          </Assign>
+                                                          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_17" Level="Info" Message="[&quot;Quantitties and values: &quot; + out_strValueDFET6]" />
+                                                          <Assign DisplayName="Populate listQuantities" sap2010:WorkflowViewState.IdRef="Assign_21">
+                                                            <Assign.To>
+                                                              <OutArgument x:TypeArguments="x:String">[out_strQuantitiesDFE]</OutArgument>
+                                                            </Assign.To>
+                                                            <Assign.Value>
+                                                              <InArgument x:TypeArguments="x:String">[strQuantityDFE]</InArgument>
+                                                            </Assign.Value>
+                                                          </Assign>
+                                                          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_18" Level="Info" Message="[&quot;Quantitties and values: &quot; + out_strQuantitiesDFE]" />
+                                                          <Assign DisplayName="Populate listItems" sap2010:WorkflowViewState.IdRef="Assign_22">
+                                                            <Assign.To>
+                                                              <OutArgument x:TypeArguments="x:String">[out_strItems]</OutArgument>
+                                                            </Assign.To>
+                                                            <Assign.Value>
+                                                              <InArgument x:TypeArguments="x:String">[strItem]</InArgument>
+                                                            </Assign.Value>
+                                                          </Assign>
+                                                          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_19" Level="Info" Message="[&quot;Quantitties and values: &quot; + out_strItems]" />
+                                                        </Sequence>
+                                                      </If.Then>
+                                                      <If.Else>
+                                                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_42">
+                                                          <Assign DisplayName="Populate listQuantitties" sap2010:WorkflowViewState.IdRef="Assign_23">
+                                                            <Assign.To>
+                                                              <OutArgument x:TypeArguments="x:String">[out_strQuantitiesDFE]</OutArgument>
+                                                            </Assign.To>
+                                                            <Assign.Value>
+                                                              <InArgument x:TypeArguments="x:String">[out_strQuantitiesDFE + "," + strQuantityDFE]</InArgument>
+                                                            </Assign.Value>
+                                                          </Assign>
+                                                          <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="13" DisplayName="Get DFE line" sap2010:WorkflowViewState.IdRef="GetRowItem_23" Row="[row]">
+                                                            <ui:GetRowItem.Value>
+                                                              <OutArgument x:TypeArguments="ui:GenericValue">[strValueDFET6]</OutArgument>
+                                                            </ui:GetRowItem.Value>
+                                                          </ui:GetRowItem>
+                                                          <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="0" DisplayName="Get Item" sap2010:WorkflowViewState.IdRef="GetRowItem_24" Row="[row]">
+                                                            <ui:GetRowItem.Value>
+                                                              <OutArgument x:TypeArguments="ui:GenericValue">[strItem]</OutArgument>
+                                                            </ui:GetRowItem.Value>
+                                                          </ui:GetRowItem>
+                                                          <Assign DisplayName="Populate listValues T6" sap2010:WorkflowViewState.IdRef="Assign_24">
+                                                            <Assign.To>
+                                                              <OutArgument x:TypeArguments="x:String">[out_strValueDFET6]</OutArgument>
+                                                            </Assign.To>
+                                                            <Assign.Value>
+                                                              <InArgument x:TypeArguments="x:String">[out_strValueDFET6 + "," + strValueDFET6]</InArgument>
+                                                            </Assign.Value>
+                                                          </Assign>
+                                                          <Assign sap2010:WorkflowViewState.IdRef="Assign_25">
+                                                            <Assign.To>
+                                                              <OutArgument x:TypeArguments="x:String">[out_strItems]</OutArgument>
+                                                            </Assign.To>
+                                                            <Assign.Value>
+                                                              <InArgument x:TypeArguments="x:String">[out_strItems + "," + strItem]</InArgument>
+                                                            </Assign.Value>
+                                                          </Assign>
+                                                          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_20" Level="Info" Message="[&quot;Quantitties and values: &quot; + out_strValueDFET6]" />
+                                                          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_21" Level="Info" Message="[&quot;Quantitties and values: &quot; + out_strQuantitiesDFE]" />
+                                                          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_22" Level="Info" Message="[&quot;Quantitties and values: &quot; + out_strItems]" />
+                                                        </Sequence>
+                                                      </If.Else>
+                                                    </If>
+                                                  </If.Else>
+                                                </If>
+                                              </Sequence>
+                                            </If.Then>
+                                            <If.Else>
+                                              <If Condition="[String.IsNullOrWhiteSpace(strQuantityDFE)]" DisplayName="If row equals DFE" sap2010:WorkflowViewState.IdRef="If_26">
+                                                <If.Else>
+                                                  <If Condition="[strQuantityDFE.Equals(&quot;DFE&quot;)]" sap2010:WorkflowViewState.IdRef="If_25">
+                                                    <If.Then>
+                                                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_43">
+                                                        <ui:GetRowItem Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="13" DisplayName="Get total DFE T6" sap2010:WorkflowViewState.IdRef="GetRowItem_25" Row="[row]">
+                                                          <ui:GetRowItem.Value>
+                                                            <OutArgument x:TypeArguments="ui:GenericValue">[strTotalDFET6]</OutArgument>
+                                                          </ui:GetRowItem.Value>
+                                                        </ui:GetRowItem>
+                                                      </Sequence>
+                                                    </If.Then>
+                                                  </If>
+                                                </If.Else>
+                                              </If>
+                                            </If.Else>
+                                          </If>
+                                        </Sequence>
+                                      </ActivityAction>
+                                    </ui:ForEachRow.Body>
+                                  </ui:ForEachRow>
+                                  <Assign DisplayName="Round  the Total Value T6" sap2010:WorkflowViewState.IdRef="Assign_27">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:Double">[strTotalValueDFET6]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:Double">[Math.Round(Convert.ToDouble(strTotalDFET6.ToString),2)]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_28" Level="Info" Message="[&quot;The value of DFE is: &quot; + in_strTotalSumTemplate]" />
+                                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_29" Level="Info" Message="[&quot;The value of DFE is: &quot; + in_strTotalSumTemplate]" />
+                                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_23" Level="Info" Message="[&quot;Total sum from the T6: &quot; + strTotalDFET6.ToString]" />
+                                  <If Condition="[in_strTotalSumTemplate.Trim.Contains(&quot;.00&quot;)]" DisplayName="If DFE Value contains .00" sap2010:WorkflowViewState.IdRef="If_28">
+                                    <If.Then>
+                                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_45">
+                                        <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_26" Level="Trace" Message="[&quot;Yes. Drop the .00&quot;]" />
+                                        <Assign DisplayName="Replace the .00 in the value" sap2010:WorkflowViewState.IdRef="Assign_26">
+                                          <Assign.To>
+                                            <OutArgument x:TypeArguments="x:String">[in_strTotalSumTemplate]</OutArgument>
+                                          </Assign.To>
+                                          <Assign.Value>
+                                            <InArgument x:TypeArguments="x:String">[in_strTotalSumTemplate.Replace(".00","")]</InArgument>
+                                          </Assign.Value>
+                                        </Assign>
+                                      </Sequence>
+                                    </If.Then>
+                                    <If.Else>
+                                      <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_27" Level="Trace" Message="[&quot;No! Continue as normal&quot;]" />
+                                    </If.Else>
+                                  </If>
+                                  <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_25" Level="Info" Message="[&quot;The value of DFE is: &quot; + in_strTotalSumTemplate]" />
+                                </Sequence>
+                                <FlowStep.Next>
+                                  <FlowDecision x:Name="__ReferenceID5" Condition="[(Not(strTotalValueDFET6 = Convert.ToDouble(in_strTotalSumTemplate.Replace(&quot;£&quot;,&quot;&quot;).Replace(&quot;,&quot;,&quot;&quot;)))) or String.IsNullOrEmpty(strTotalDFET6.ToString)]" DisplayName="Total DFE" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+                                    <FlowDecision.True>
+                                      <FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+                                        <Throw DisplayName="Throw E02 for unmatch Total DFE" Exception="[new BusinessRuleException(&quot;E02. Sum of values in DFE Costs column does not equal Total DFE value.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_8" />
+                                      </FlowStep>
+                                    </FlowDecision.True>
+                                    <FlowDecision.False>
+                                      <FlowDecision x:Name="__ReferenceID7" Condition="[String.IsNullOrEmpty(out_strQuantitiesDFE) OR String.IsNullOrEmpty(out_strValueDFET6)]" DisplayName="Quantity/ Value" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
+                                        <FlowDecision.True>
+                                          <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+                                            <Throw DisplayName="Throw E01 for missing lines in T6" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_9" />
+                                          </FlowStep>
+                                        </FlowDecision.True>
+                                        <FlowDecision.False>
+                                          <FlowStep x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_13">
+                                            <ui:LogMessage DisplayName="Continue Message" sap2010:WorkflowViewState.IdRef="LogMessage_24" Level="Info" Message="[&quot;Continue with next steps. Add item to the queue&quot;]" />
+                                          </FlowStep>
+                                        </FlowDecision.False>
+                                      </FlowDecision>
+                                    </FlowDecision.False>
+                                  </FlowDecision>
+                                </FlowStep.Next>
+                              </FlowStep>
+                            </FlowStep.Next>
+                          </FlowStep>
+                        </FlowDecision.False>
+                      </FlowDecision>
+                    </FlowDecision.True>
+                    <FlowDecision.False>
+                      <FlowStep x:Name="__ReferenceID13" sap2010:WorkflowViewState.IdRef="FlowStep_16">
+                        <Sequence DisplayName="Extract data from pdf file" sap2010:WorkflowViewState.IdRef="Sequence_47">
+                          <Sequence.Variables>
+                            <Variable x:TypeArguments="s:String[]" Name="listTextPdf" />
+                            <Variable x:TypeArguments="x:Int32" Name="intCurrentIndex" />
+                          </Sequence.Variables>
+                          <If Condition="[strTextFromPdf.Trim.ToLower.Contains(&quot;work address/ location of work&quot;)]" DisplayName="If text contains Work Address/ Location of work" sap2010:WorkflowViewState.IdRef="If_31">
+                            <If.Then>
+                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_50">
+                                <p:SplitString DisplayName="Split Pdf text by new line" sap2010:WorkflowViewState.IdRef="SplitString_1" Input="[strTextFromPdf]" Result="[listTextPdf]" Separator="[Environment.NewLine]" StringSplitOptions="None" />
+                                <ui:ForEach x:TypeArguments="x:String" CurrentIndex="{x:Null}" DisplayName="For Each" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[listTextPdf]">
+                                  <ui:ForEach.Body>
+                                    <ActivityAction x:TypeArguments="x:String">
+                                      <ActivityAction.Argument>
+                                        <DelegateInArgument x:TypeArguments="x:String" Name="linePDF" />
+                                      </ActivityAction.Argument>
+                                      <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_49">
+                                        <If Condition="[linePDF.Trim.ToLower.Contains(&quot;work address/ location of work&quot;)]" DisplayName="If line contains Work Address/ Location of work" sap2010:WorkflowViewState.IdRef="If_30">
+                                          <If.Then>
+                                            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_51">
+                                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_48">
+                                                <Assign DisplayName="Current Index" sap2010:WorkflowViewState.IdRef="Assign_28">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="x:Int32">[intCurrentIndex]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="x:Int32">[Array.IndexOf(listTextPdf, linePDF)]</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                                <Assign DisplayName="Location" sap2010:WorkflowViewState.IdRef="Assign_29">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="x:String">[out_strAdressValue]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="x:String">[listTextPdf(intCurrentIndex + 1)]</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                                <ui:LogMessage DisplayName="Show location" sap2010:WorkflowViewState.IdRef="LogMessage_32" Level="Trace" Message="[&quot;Location is: &quot; + out_strAdressValue]" />
+                                              </Sequence>
+                                            </Sequence>
+                                          </If.Then>
+                                          <If.Else>
+                                            <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_31" Level="Info" Message="[&quot;Move to next line n PDF&quot;]" />
+                                          </If.Else>
+                                        </If>
+                                      </Sequence>
+                                    </ActivityAction>
+                                  </ui:ForEach.Body>
+                                </ui:ForEach>
+                                <If Condition="[String.IsNullOrEmpty(out_strAdressValue)]" DisplayName="If Address is empty" sap2010:WorkflowViewState.IdRef="If_32">
+                                  <If.Then>
+                                    <ui:LogMessage DisplayName="Continue Message" Level="Info" Message="[&quot;Continue with next steps&quot;]" sap2010:WorkflowViewState.IdRef="LogMessage_33" />
+                                  </If.Then>
+                                  <If.Else>
+                                    <Throw DisplayName="Throw E01 for missing lines in T6" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_16" />
+                                  </If.Else>
+                                </If>
+                              </Sequence>
+                            </If.Then>
+                            <If.Else>
+                              <Throw DisplayName="Throw E01 for missing lines in T6" Exception="[new BusinessRuleException(&quot;E01. DFE email request does not respect template structure/ does not contain any attachaments/attachament is not excel or pdf/ pdf or excel format does not respect T6 structure.&quot;)]" sap2010:WorkflowViewState.IdRef="Throw_15" />
+                            </If.Else>
+                          </If>
+                        </Sequence>
+                      </FlowStep>
+                    </FlowDecision.False>
+                  </FlowDecision>
+                </FlowStep.Next>
+              </FlowStep>
+            </FlowStep.Next>
+          </FlowStep>
+        </FlowStep.Next>
+      </FlowStep>
+    </Flowchart.StartNode>
+    <x:Reference>__ReferenceID0</x:Reference>
+    <x:Reference>__ReferenceID1</x:Reference>
+    <x:Reference>__ReferenceID2</x:Reference>
+    <x:Reference>__ReferenceID3</x:Reference>
+    <x:Reference>__ReferenceID4</x:Reference>
+    <x:Reference>__ReferenceID5</x:Reference>
+    <x:Reference>__ReferenceID6</x:Reference>
+    <x:Reference>__ReferenceID7</x:Reference>
+    <x:Reference>__ReferenceID8</x:Reference>
+    <x:Reference>__ReferenceID9</x:Reference>
+    <x:Reference>__ReferenceID10</x:Reference>
+    <x:Reference>__ReferenceID11</x:Reference>
+    <x:Reference>__ReferenceID12</x:Reference>
+    <x:Reference>__ReferenceID13</x:Reference>
+    <sads:DebugSymbol.Symbol>d4YBSDpcTXkgRG9jdW1lbnRzXDExMF8xMSBERkUgSW5maWxsIHYxLjJcREZFSW5maWxsXDExMF8xMSBERkUgSW5maWxsIHYwLjEgUGFydCBJIFJlcXVlc3QgQXBwcm92YWxzXEF0dGFjaG1lbnRcVmVyaWZ5VGhlQXR0YWNoYW1lbnRzLnhhbWyCAlcDmgUPAgEBZAlkuQEDAdoCZw1uFgMB1gJxEa4CHgMB5wGwAkOwAlIDAeUBwgQZgAUkAwG5AbICSLICbgMBtwG6Ah3LAjgDAa0BzgIhogQsAgEOpARTpASTAgIBDasEV6sEsAECAQqzBC2zBOIBAgEIrgQtrgT3AgIBBqcEKacEhgICAQS1Ah21AuoCAgECZHhktgEDAdsCbDpsYQMB2QJpO2lIAwHXAnG2AXHFAQMB1AJ3F6sCIgMB6AHHBBv/BCADAboBugLdAboC7gEDAbUBwAIjyAIuAwGuAc8CI/4CMwMBjAH/AiODBDMCASuEBCOLBCwCASeMBCOMBNIBAgEkjQQjjQTSAQIBIY4EI44E1AECAR+PBCOgBCgCARKhBCOhBNIBAgEPswSgAbME3wECAQmuBG6uBMoCAgEHpwRopwTZAQIBBbUCYLUCvAICAQN4GXiRAQMB0QJ5GaoCHgMB6QHHBCnHBH0DAbsByQQf+gQqAwG/Af0EH/0E6gIDAb0BwQIlxwI5AwGvAc8CVM8CXAMBqwHVAin7AjQDAY0B/wJU/wJcAwGKAYUDKYAENAIBLIkETokEhgECASqGBE+GBGMCASiMBJEBjATPAQIBJY0EkQGNBM8BAgEijgSRAY4E0QECASCPBDGPBGoCARORBCebBDICAReeBCeeBL8BAgEVoQSRAaEEzwECARB4hgF4jgEDAdICeSd5UwMB6gF7HcUBKAMBqQLIAR2oAiIDAewBygQhygT3AQMB3wHLBCHxBC4DAccB8gQh+QQmAwHAAf0EYP0EvAIDAb4BwQJVwQJdAwGzAcQCK8QCWgMBsgHBArQBwQLEAQMBsAHcAivgAjsDAaUB4QIr+gIwAwGOAYwDK5ADOwMBhAGRAyv/AzACAS2SBCmSBLwBAgEdkwQpmgQyAgEYngSWAZ4EvAECARZ/H8QBOgMBqgLIASvIAVYDAe0BygEh6gEsAwGPAu0BIaYCLAMB7wHKBI8BygShAQMB4wHKBKkBygS4AQMB4QHKBMMBygTaAQMB4AHLBKwBywS7AQMB3QHRBCfuBDIDAcgB8gQv8gRbAwHBAfQEJfQEwwEDAcUB9wQl9wTwAgMBwwHeAlfeAmcDAakB3ALJAdwC0AEDAacB3AJu3AJxAwGmAeECOeECZgMBjwHjAi/4AjoDAZEBjgNejgNuAwGIAYwDygGMA9EBAwGGAYwDbowDcgMBhQGRAzmRA4UBAgEukwMv7AM6AgE67wMv/QM0AgEvkgSYAZIEuQECAR6YBFSYBH4CARuVBFWVBG0CARl/6wF/9wEDAc8Cf4UCf40CAwHNAoUBJcEBMAMBqwLLASPpAS4DAZAC7gEjpQIoAwHwAdIEKe0ELgMByQH0BGj0BJABAwHGAfcEZvcEwgIDAcQB5AIx9wI2AwGSAZQDMesDNgIBO+8DPe8DagIBMPEDM/sDOAIBMYoBJ5EBMAMByQKSASfAATQDAawCzAElzAHTAQMBogLNASXoASoDAZEC7gEx7gFcAwHxAfABJ54CQgMB9gGhAiejAjIDAfMB0gQ30gSEAQMBygHUBC3oBDgDAc4B6wQt6wTFAQMBzAHkAj/kApUBAwGTAeYCNfUCQAMBlQGUAz+UA3ACATyWAzXpAzoCAT3xA0HxA2sCATLzAzf5A0ICATOPAWOPAXcDAcwCjAFkjAFyAwHKApIBwwGSAdMBAwHHApgBLb0BOAMBrQLMAaYBzAGsAQMBqALMAb4BzAHQAQMBpgLMAVrMAWIDAaQCzAGzAcwBuAEDAaMCzQEzzQF/AwGSAs8BKeEBNAMBlwLkASnmATQDAZQC8AHBAfAB0gEDAY0C9gEtmwI4AwH3AaICKaIC/wIDAfQB1QQv5wQ6AwHPAesEmwHrBMIBAwHNAecCN+sCRwMBnwHsAjfzAjwDAZcB9AI39AJtAwGWAZYDQ5YDcQIBPpgDOb4DRAIBYsEDOecDRAIBQPQDOfgDSQIBNJkBL50BQgMBwQKeAS+8ATQDAa4C0AEr1wE0AwGeAtgBK98BNAMBmQLgASvgAWEDAZgC5QEr5QGGAwMBlQL6AS/+AUIDAYgC/wEvmgI0AwH4AaICdqIC0gIDAfUB1gQx3QQ6AwHZAd4EMeUEOgMB0wHmBDHmBNcBAwHQAekCY+kCdwMBowHnAtkB5wLgAQMBoQHnAnrnAn0DAaAB7AJF7AJxAwGYAe4CO+4ChAMDAZ0B8QI78QLcAQMBmgGZAzudA0sCAX6eAzuiA0sCAXijAzuqA0QCAXSrAzurA+gBAgFxrAM7swNEAgFttAM7tAPrAQIBarUDO7wDRAIBZr0DO70D4wECAWPCAzvJA0QCAV7KAzvOA0sCAVjPAzvTA0sCAVLUAzvbA0QCAU7cAzvjA0QCAUrkAzvkA+gBAgFH5QM75QPrAQIBROYDO+YD4wECAUH2A2z2A3sCATj0A9QB9APbAQIBNvQDfPQDgAECATWZAUaZAUoDAcYCmwFbmwFsAwHEApkBnwGZAakBAwHCAp4BPZ4BkwEDAa8CoAEzugE+AwGxAtUBV9UBXAMBoQLSAVjSAWUDAZ8C3QFW3QFcAwGcAtoBV9oBZgMBmgLlAX3lAdkCAwGWAvoBRvoBSgMBjAL8AWL8AXMDAYoC+gGfAfoBqQEDAYkC/wE9/wGTAQMB+QGBAjOTAj4DAf0BlgIzmAI+AwH6AdsEW9sEgAEDAdwB2ARc2ARtAwHaAeMEXOMEfgMB1gHgBF3gBHEDAdQB5gSiAeYE1AEDAdEB7gJ67gLWAgMBngHxAqkB8QLZAQMBmwGbA26bA30DAYIBmQPSAZkD2QEDAYABmQN+mQOCAQIBf6ADbqADdwIBfJ4DzQGeA9QBAgF6ngN+ngOBAQIBeagDZqgDdQIBd6UDZ6UDegIBdasDqQGrA+UBAgFysQNmsQN2AgFwrgNnrgN9AgFutAOpAbQD6AECAWu6A2a6A28CAWm3A2e3A3UCAWe9A6kBvQPgAQIBZMcDZscDkwECAWHEA2fEA30CAV/MA27MA30CAVzKA9IBygPZAQIBWsoDfsoDggECAVnRA27RA3cCAVbPA80BzwPUAQIBVM8Dfs8DgQECAVPZA2bZA48BAgFR1gNn1gN6AgFP4QNm4QOEAQIBTd4DZ94DdQIBS+QDqQHkA+UBAgFI5QOpAeUD6AECAUXmA6kB5gPgAQIBQqEBNagBPgMBvQKpATWwAT4DAbgCsQE1uAE+AwGzArkBNbkBawMBsgKCAjWJAj4DAYQCigI1kQI+AwH/AZICNZICawMB/gGXAjWXApADAwH7AaYBYaYBZQMBwAKjAWKjAW8DAb4CrgFgrgFmAwG7AqsBYasBcAMBuQK2AWC2AWgDAbYCswFhswFvAwG0AocCYYcCZQMBhwKEAmKEAm8DAYUCjwJgjwJmAwGCAowCYYwCcAMBgAKXAocBlwLjAgMB/AE=</sads:DebugSymbol.Symbol>
+  </Flowchart>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,60">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="1981,91" />
+      <sap2010:ViewStateData Id="Assign_12" sap:VirtualizedContainerService.HintSize="502,60" />
+      <sap2010:ViewStateData Id="ExcelReadCell_3" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_13" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Break_1" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="264,446">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="464,593" />
+      <sap2010:ViewStateData Id="Sequence_23" sap:VirtualizedContainerService.HintSize="486,816">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="502,949" />
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="524,1173">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelApplicationScope_2" sap:VirtualizedContainerService.HintSize="538,1282">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="560,1406">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ReadPDFText_4" sap:VirtualizedContainerService.HintSize="511,59" />
+      <sap2010:ViewStateData Id="Assign_7" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Break_2" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="264,346">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Throw_6" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_17" sap:VirtualizedContainerService.HintSize="222,146">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="511,494" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="533,717">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="555,841">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelReadCell_4" sap:VirtualizedContainerService.HintSize="511,59" />
+      <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_11" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Break_3" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="264,346">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Throw_7" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_19" sap:VirtualizedContainerService.HintSize="222,146">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="511,493" />
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="533,716">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelApplicationScope_3" sap:VirtualizedContainerService.HintSize="547,825">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Throw_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="222,146">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="794,973" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="816,1097">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="1396,1245" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="1981,1554" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="2003,1809">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="200,51" />
+      <sap2010:ViewStateData Id="Throw_14" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="FlowStep_14">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">0,568</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelReadRange_1" sap:VirtualizedContainerService.HintSize="314,59" />
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="336,183">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelApplicationScope_4" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetRowItem_18" sap:VirtualizedContainerService.HintSize="833,64" />
+      <sap2010:ViewStateData Id="GetRowItem_19" sap:VirtualizedContainerService.HintSize="539,64" />
+      <sap2010:ViewStateData Id="Throw_13" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="LogMessage_16" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="If_21" sap:VirtualizedContainerService.HintSize="539,243" />
+      <sap2010:ViewStateData Id="Break_5" sap:VirtualizedContainerService.HintSize="539,22" />
+      <sap2010:ViewStateData Id="Sequence_38" sap:VirtualizedContainerService.HintSize="561,533">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_22" sap:VirtualizedContainerService.HintSize="686,683" />
+      <sap2010:ViewStateData Id="Sequence_39" sap:VirtualizedContainerService.HintSize="708,807">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_23" sap:VirtualizedContainerService.HintSize="833,957" />
+      <sap2010:ViewStateData Id="Sequence_40" sap:VirtualizedContainerService.HintSize="855,1185">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEachRow_4" sap:VirtualizedContainerService.HintSize="1510,1334">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetRowItem_20" sap:VirtualizedContainerService.HintSize="1458,64" />
+      <sap2010:ViewStateData Id="GetRowItem_21" sap:VirtualizedContainerService.HintSize="314,64" />
+      <sap2010:ViewStateData Id="GetRowItem_22" sap:VirtualizedContainerService.HintSize="314,64" />
+      <sap2010:ViewStateData Id="Assign_20" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="LogMessage_17" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="Assign_21" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="LogMessage_18" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="Assign_22" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="LogMessage_19" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="Sequence_41" sap:VirtualizedContainerService.HintSize="336,991">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_23" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="GetRowItem_23" sap:VirtualizedContainerService.HintSize="314,64" />
+      <sap2010:ViewStateData Id="GetRowItem_24" sap:VirtualizedContainerService.HintSize="314,64" />
+      <sap2010:ViewStateData Id="Assign_24" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_25" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="LogMessage_20" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="LogMessage_21" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="LogMessage_22" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="Sequence_42" sap:VirtualizedContainerService.HintSize="336,991">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_24" sap:VirtualizedContainerService.HintSize="697,1141" />
+      <sap2010:ViewStateData Id="If_29" sap:VirtualizedContainerService.HintSize="822,1291" />
+      <sap2010:ViewStateData Id="Sequence_46" sap:VirtualizedContainerService.HintSize="844,1415">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="GetRowItem_25" sap:VirtualizedContainerService.HintSize="314,64" />
+      <sap2010:ViewStateData Id="Sequence_43" sap:VirtualizedContainerService.HintSize="336,188">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_25" sap:VirtualizedContainerService.HintSize="464,338" />
+      <sap2010:ViewStateData Id="If_26" sap:VirtualizedContainerService.HintSize="589,488" />
+      <sap2010:ViewStateData Id="If_27" sap:VirtualizedContainerService.HintSize="1458,1565" />
+      <sap2010:ViewStateData Id="Sequence_44" sap:VirtualizedContainerService.HintSize="1480,1793">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEachRow_5" sap:VirtualizedContainerService.HintSize="1510,1942">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_27" sap:VirtualizedContainerService.HintSize="1510,60" />
+      <sap2010:ViewStateData Id="LogMessage_28" sap:VirtualizedContainerService.HintSize="1510,93" />
+      <sap2010:ViewStateData Id="LogMessage_29" sap:VirtualizedContainerService.HintSize="1510,93" />
+      <sap2010:ViewStateData Id="LogMessage_23" sap:VirtualizedContainerService.HintSize="1510,93" />
+      <sap2010:ViewStateData Id="LogMessage_26" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="Assign_26" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_45" sap:VirtualizedContainerService.HintSize="336,317">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_27" sap:VirtualizedContainerService.HintSize="314,93" />
+      <sap2010:ViewStateData Id="If_28" sap:VirtualizedContainerService.HintSize="1510,467" />
+      <sap2010:ViewStateData Id="LogMessage_25" sap:VirtualizedContainerService.HintSize="1510,93" />
+      <sap2010:ViewStateData Id="Sequence_37" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Throw_8" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="FlowStep_6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">2.2833333333333,888</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Throw_9" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="FlowStep_7">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">80,1009</av:Point>
+            <av:Size x:Key="ShapeSize">200,22</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_24" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_13">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">504.5,994.02</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_3" sap:VirtualizedContainerService.HintSize="89,87">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">365.5,976.5</av:Point>
+            <av:Size x:Key="ShapeSize">89,87</av:Size>
+            <av:PointCollection x:Key="TrueConnector">365.5,1020 280,1020</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">454.5,1020 484.5,1020 484.5,1019.52 504.5,1019.52</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_2" sap:VirtualizedContainerService.HintSize="70,87">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">252.283333333333,855.5</av:Point>
+            <av:Size x:Key="ShapeSize">70,87</av:Size>
+            <av:PointCollection x:Key="TrueConnector">252.283333333333,899 202.283333333333,899</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">322.283333333333,899 410,899 410,976.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_12">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">187.283333333333,754.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">287.283333333333,805.5 287.283333333333,855.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_5">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">187.283333333333,653.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">287.283333333333,704.5 287.283333333333,754.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_4" sap:VirtualizedContainerService.HintSize="111,87">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">276.283333333333,535.5</av:Point>
+            <av:Size x:Key="ShapeSize">111,87</av:Size>
+            <av:PointCollection x:Key="FalseConnector">387.283333333333,579 417.283333333333,579 417.283333333333,679 387.283333333333,679</av:PointCollection>
+            <av:PointCollection x:Key="TrueConnector">276.283333333333,579 200,579</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SplitString_1" sap:VirtualizedContainerService.HintSize="735,22" />
+      <sap2010:ViewStateData Id="Assign_28" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Assign_29" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="LogMessage_32" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Sequence_48" sap:VirtualizedContainerService.HintSize="336,415">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_51" sap:VirtualizedContainerService.HintSize="358,539">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_31" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="If_30" sap:VirtualizedContainerService.HintSize="697,687" />
+      <sap2010:ViewStateData Id="Sequence_49" sap:VirtualizedContainerService.HintSize="719,811">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="735,945" />
+      <sap2010:ViewStateData Id="LogMessage_33" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Throw_16" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_32" sap:VirtualizedContainerService.HintSize="735,239" />
+      <sap2010:ViewStateData Id="Sequence_50" sap:VirtualizedContainerService.HintSize="757,1410">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Throw_15" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_31" sap:VirtualizedContainerService.HintSize="982,1558" />
+      <sap2010:ViewStateData Id="Sequence_47" sap:VirtualizedContainerService.HintSize="1004,1682">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_16">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">545,453.02</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_1" sap:VirtualizedContainerService.HintSize="70,87">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">425,435.5</av:Point>
+            <av:Size x:Key="ShapeSize">70,87</av:Size>
+            <av:PointCollection x:Key="TrueConnector">425,479 331.783333333333,479 331.783333333333,535.5</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">495,479 525,479 525,478.52 545,478.52</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">360,334.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">460,385.5 460,435.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">339,230</av:Point>
+            <av:Size x:Key="ShapeSize">242,60</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">460,290 460,334.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_1">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">360,127.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">460,178.5 460,230</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="794,1302">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">430,2.5</av:Point>
+            <av:Size x:Key="ShapeSize">60,75</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">460,77.5 460,127.5</av:PointCollection>
+            <x:Double x:Key="Height">1103.5</x:Double>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Double x:Key="Width">780</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="VerifyTheAttachaments_1" sap:VirtualizedContainerService.HintSize="834,1382" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

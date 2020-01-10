@@ -1,0 +1,57 @@
+{
+  "name": "RPAbox Framework",
+  "description": "Framework",
+  "main": "110_11 DFE Infill v0.1.xaml",
+  "dependencies": {
+    "UiPath.UIAutomation.Activities": "[18.4.3]",
+    "UiPath.System.Activities": "[18.4.2]",
+    "UiPath.Excel.Activities": "[2.5.1]",
+    "UiPath.Mail.Activities": "[1.3.0]",
+    "RPABox.Activities": "[1.0.0]",
+    "UiPathTeam.SharePoint.Activities": "[1.3.0]",
+    "UiPath.MicrosoftOffice365.Activities": "[1.1.0]",
+    "SharePoint": "[15.0.0]",
+    "Microsoft.Activities": "[1.0.1]",
+    "Microsoft.Activities.Extensions": "[2.0.6.9]",
+    "UiPath.PDF.Activities": "[3.0.0]",
+    "UiPathTeam.PDF.Extensions.Activities": "[2.3.0]"
+  },
+  "schemaVersion": "3.2",
+  "studioVersion": "18.4.3.0",
+  "projectVersion": "1.0.7164.28328",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ]
+  },
+  "projectType": "Workflow",
+  "libraryOptions": {
+    "includeOriginalXaml": false,
+    "privateWorkflows": []
+  },
+  "arguments": {
+    "input": [
+      {
+        "name": "in_dictConfig",
+        "type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+        "required": false,
+        "hasDefault": false
+      },
+      {
+        "name": "in_wbPath",
+        "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+        "required": false,
+        "hasDefault": false
+      },
+      {
+        "name": "in_strWorkblockName",
+        "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+        "required": false,
+        "hasDefault": false
+      }
+    ],
+    "output": []
+  }
+}

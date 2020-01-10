@@ -1,0 +1,221 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Main" this:Main.in_strFolder="ScreenShotExceptions" this:Main.in_strTransactionItemId="Warehouse005"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:this="clr-namespace:"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_strFolder" Type="InArgument(x:String)" />
+    <x:Property Name="in_strTransactionItemId" Type="InArgument(x:String)" />
+    <x:Property Name="out_boolIsScreenshotPath" Type="OutArgument(x:Boolean)" />
+    <x:Property Name="in_wbName" Type="InArgument(x:String)" />
+    <x:Property Name="in_wbPath" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>Main_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Take ScreenShot sequence will take a printscreen and save it in a specified location.&#xA;The Main Folder will be present on the users Desktop.&#xA;Steps:&#xA;1. Get the path to the used Desktop&#xA;2. Take screenshot of the current screen&#xA;3. Verify if Folder exists:&#xA;  -&gt; If yes: Continue with the next steps&#xA;  -&gt; If no: Create the folder with the name specified in Config&#xA;4. Save screenshot in the specified location with unique name&#xA;5. Verify if screenshot is saved &#xA;&#xA;Arguments needed in: &#xA;              -&gt; in_strFolder - is the Folder on Desktop where screenshot will be saved, the name will be specified in Config file.&#xA;              -&gt; in_strTransactionItemId - is the reference to the executed item. The value is different for each process. Choose it based on what it is representative for the process.&#xA;&#xA;Arguments needed out: &#xA;              -&gt; out_boolIsScreenshotPath - verifies if the screenshot has been saved. Pass the value to the upcomming workflows that will use the screenshot.&#xA;" DisplayName="Take ScreenShot sequence" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="strDesktopEnvironment" />
+      <Variable x:TypeArguments="ui:Image" Name="screenshot" />
+      <Variable x:TypeArguments="x:Boolean" Name="boolIsScreenshotFolder" />
+      <Variable x:TypeArguments="x:Boolean" Name="boolIsPathScreenshot" />
+      <Variable x:TypeArguments="x:String" Name="wbName" />
+      <Variable x:TypeArguments="x:String" Name="wbPath" />
+      <Variable x:TypeArguments="x:String" Name="strWorkblockPath" />
+    </Sequence.Variables>
+    <Assign DisplayName="Check / Set workblock Name" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[wbName]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[if ( in_wbName is nothing , "TakeScreenshot" , in_wbName )]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Set workblock Path" sap2010:WorkflowViewState.IdRef="Assign_4">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[wbPath]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_wbPath + wbName + "\"]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[wbPath + &quot;Execution Started&quot;]" />
+    <ui:GetEnvironmentFolder DisplayName="Get Environment Folder for Desktop" FolderPath="[strDesktopEnvironment]" sap2010:WorkflowViewState.IdRef="GetEnvironmentFolder_1" SpecialFolder="Desktop" />
+    <ui:RetryScope DisplayName="Retry Take screenshot" sap2010:WorkflowViewState.IdRef="RetryScope_1" NumberOfRetries="3" RetryInterval="00:00:07">
+      <ui:RetryScope.ActivityBody>
+        <ActivityAction>
+          <Sequence DisplayName="Action - Take Screenshot" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Take Screenshot of current situation" sap2010:WorkflowViewState.IdRef="TakeScreenshot_2" Screenshot="[screenshot]">
+              <ui:TakeScreenshot.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" WaitForReady="INTERACTIVE" />
+              </ui:TakeScreenshot.Target>
+            </ui:TakeScreenshot>
+          </Sequence>
+        </ActivityAction>
+      </ui:RetryScope.ActivityBody>
+      <ui:RetryScope.Condition>
+        <ActivityFunc x:TypeArguments="x:Boolean" />
+      </ui:RetryScope.Condition>
+    </ui:RetryScope>
+    <ui:PathExists DisplayName="Path Exists for Screenshots Folder" Exists="[boolIsScreenshotFolder]" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[in_strFolder]" PathType="Folder" />
+    <If Condition="[boolIsScreenshotFolder]" DisplayName="If Screenshot Folder" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Continue to save the screenshot&quot;]" />
+      </If.Then>
+      <If.Else>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[strDesktopEnvironment + &quot;\&quot; + in_strFolder]" />
+          <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Continue to save the screenshot after creating the directory.&quot;]" />
+        </Sequence>
+      </If.Else>
+    </If>
+    <ui:RetryScope DisplayName="Retry saving the screenshot" sap2010:WorkflowViewState.IdRef="RetryScope_2" NumberOfRetries="3" RetryInterval="00:00:07">
+      <ui:RetryScope.ActivityBody>
+        <ActivityAction>
+          <Sequence DisplayName="Action - Saving the screenshot" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <ui:SaveImage DisplayName="Save Screenshot to Desktop Folder" FileName="[strDesktopEnvironment + &quot;\&quot; + in_strFolder + &quot;\&quot; + in_strTransactionItemId + &quot;_&quot; + DateTime.Now.ToString(&quot;dd.MM.yyyy hh.mm.ss&quot;) + &quot;.png&quot;]" sap2010:WorkflowViewState.IdRef="SaveImage_2" Image="[screenshot]" />
+          </Sequence>
+        </ActivityAction>
+      </ui:RetryScope.ActivityBody>
+      <ui:RetryScope.Condition>
+        <ActivityFunc x:TypeArguments="x:Boolean" />
+      </ui:RetryScope.Condition>
+    </ui:RetryScope>
+    <ui:PathExists DisplayName="Path Exists for Just saved screenshot" Exists="[boolIsPathScreenshot]" sap2010:WorkflowViewState.IdRef="PathExists_2" Path="[strDesktopEnvironment + &quot;\&quot; + in_strFolder + &quot;\&quot; + in_strTransactionItemId + &quot;_&quot; + DateTime.Now.ToString(&quot;dd.MM.yyyy hh:mm:ss&quot;) + &quot;.png&quot;]" PathType="File" />
+    <If Condition="[boolIsPathScreenshot]" DisplayName="If Path to screenshot" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Assign DisplayName="Assign value True for screenshot path" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Boolean">[out_boolIsScreenshotPath]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <Assign DisplayName="Assign value False for screenshot path" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Boolean">[out_boolIsScreenshotPath]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
+    <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[wbPath + &quot;Execution ended succesfully&quot;]" />
+    <sads:DebugSymbol.Symbol>d0tDOlxVc2Vyc1xpdWxpYVxEZXNrdG9wXHJwYWJveGZyYW1ld29yay1tYXN0ZXJcRnJhbWV3b3JrXFRha2VTY3JlZW5zaG90LnhhbWwzAYoBAZcBAQMBUQFmAQJLA6gBDgIBAVUFXA4CAUBdBWQOAgE6ZQVlnwECATdmBWbHAQIBNGcFdhUCAS13BXfAAQIBKHgFggEKAgEcgwEFjgEVAgEUjwEFjwHtAgIBEJABBaUBCgIBBaYBBaYBqQECAQJaMFpsAgFDVzFXOQIBQWIwYkoCAT1fMV85AgE7ZXJlnAECAThmWmZzAgE1Z4kBZ5MBAgEzZ3dnegIBMmoLcBYCAS53THdmAgErd5sBd6sBAgEpeBN4LQIBHXoJeqgBAgEmfQmAARQCAR+DAY8BgwGZAQIBG4MBfYMBgAECARqGAQuIARYCARWPAU+PAWcCARKPAZwBjwHaAgIBEZABE5ABKwIBBpIBCZkBEgIBDJwBCaMBEgIBCKYBcqYBpgECAQNrDW8hAgEvenZ6pQECASd+C37NAQIBIn8Lf8gBAgEghwENhwHYAgIBFpcBNZcBOQIBD5QBNpQBUAIBDaEBNaEBOgIBC54BNp4BUAIBCWunAWu1AQIBMH6SAX7KAQIBI394f8UBAgEhhwFUhwGSAgIBGYcBxwKHAdUCAgEX</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="676,60" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="676,60" />
+      <sap2010:ViewStateData Id="LogMessage_6" sap:VirtualizedContainerService.HintSize="676,92.8" />
+      <sap2010:ViewStateData Id="GetEnvironmentFolder_1" sap:VirtualizedContainerService.HintSize="676,62.4" />
+      <sap2010:ViewStateData Id="TakeScreenshot_2" sap:VirtualizedContainerService.HintSize="314.4,68.8" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="336.8,193.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="RetryScope_1" sap:VirtualizedContainerService.HintSize="676,369.6" />
+      <sap2010:ViewStateData Id="PathExists_1" sap:VirtualizedContainerService.HintSize="676,90.4" />
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="314.4,92.8" />
+      <sap2010:ViewStateData Id="CreateDirectory_1" sap:VirtualizedContainerService.HintSize="314.4,22.4" />
+      <sap2010:ViewStateData Id="LogMessage_4" sap:VirtualizedContainerService.HintSize="314.4,92.8" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="336.8,280">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="676,429.6" />
+      <sap2010:ViewStateData Id="SaveImage_2" sap:VirtualizedContainerService.HintSize="314.4,92.8" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="336.8,217.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="RetryScope_2" sap:VirtualizedContainerService.HintSize="676,393.6" />
+      <sap2010:ViewStateData Id="PathExists_2" sap:VirtualizedContainerService.HintSize="676,90.4" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="243.2,60" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="243.2,60" />
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="676,209.6" />
+      <sap2010:ViewStateData Id="LogMessage_7" sap:VirtualizedContainerService.HintSize="676,92.8" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="698.4,2808">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Main_1" sap:VirtualizedContainerService.HintSize="738.4,2888" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

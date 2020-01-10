@@ -1,0 +1,35 @@
+{
+  "name": "EmailInbox",
+  "description": "Blank Process",
+  "main": "EmailInbox.xaml",
+  "dependencies": {
+    "UiPath.UIAutomation.Activities": "[18.4.4]",
+    "UiPath.System.Activities": "[18.4.2]",
+    "UiPath.Excel.Activities": "[2.5.1]",
+    "UiPath.Mail.Activities": "[1.3.0]",
+    "Microsoft.Activities": "[1.0.1]",
+    "Microsoft.Activities.Extensions": "[2.0.6.9]",
+    "RegexModeling": "[1.0.6.1]",
+    "FluentRegex": "[0.1.0]",
+    "UiPath.PDF.Activities": "[3.0.0]",
+    "UiPathTeam.PDF.Extensions.Activities": "[2.3.0]",
+    "BitMiracle.Docotic.Pdf": "[5.10.9957]",
+    "BalaReva.PDF.Activities": "[2019.1.0]",
+    "PDF_Activities": "[1.0.2]"
+  },
+  "schemaVersion": "3.2",
+  "studioVersion": "18.4.4.0",
+  "projectVersion": "1.0.0.0",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ]
+  },
+  "projectType": "Workflow",
+  "libraryOptions": {
+    "includeOriginalXaml": false,
+    "privateWorkflows": []
+  }
+}

@@ -1,0 +1,590 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Process_Transaction_Item"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:snm="clr-namespace:System.Net.Mail;assembly=System"
+ xmlns:ss="clr-namespace:System.Security;assembly=mscorlib"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_wbName" Type="InArgument(x:String)" />
+    <x:Property Name="in_wbPath" Type="InArgument(x:String)" />
+    <x:Property Name="in_transactionItem" Type="InArgument(ui:QueueItem)" />
+    <x:Property Name="intTransactionNumber" Type="InArgument(x:Int32)" />
+    <x:Property Name="in_strSaveMailPath" Type="InArgument(x:String)" />
+    <x:Property Name="in_strOracleLink" Type="InArgument(x:String)" />
+    <x:Property Name="in_strUsernameOracle" Type="InArgument(x:String)" />
+    <x:Property Name="in_strscPaswword" Type="InArgument(ss:SecureString)" />
+    <x:Property Name="in_strQueueName2" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>Process_Transaction_Item_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Security</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Plugin.Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Global - Process_Transaction_Item" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="wbName" />
+      <Variable x:TypeArguments="x:String" Name="wbPath" />
+      <Variable x:TypeArguments="x:String" Name="strDFECumulativeValue" />
+      <Variable x:TypeArguments="scg:List(snm:MailMessage)" Name="listMailMessages" />
+      <Variable x:TypeArguments="x:String" Name="strProjectNumber" />
+      <Variable x:TypeArguments="x:String" Name="strNewString" />
+      <Variable x:TypeArguments="x:String" Name="strNewStringForDFETracker" />
+      <Variable x:TypeArguments="x:String" Name="strPremises" />
+      <Variable x:TypeArguments="x:Double" Name="strNewCPP" />
+      <Variable x:TypeArguments="x:String" Name="strCurrentCPP" />
+      <Variable x:TypeArguments="x:String" Name="strCivilOrCable" />
+      <Variable x:TypeArguments="x:String" Name="strDFEFulcrum" />
+      <Variable x:TypeArguments="x:String" Name="strNex" />
+      <Variable x:TypeArguments="x:String" Name="strWorkId" />
+      <Variable x:TypeArguments="x:String" Name="strFulcrumMinorDevDFECost" />
+    </Sequence.Variables>
+    <Assign DisplayName="Set Workblock Name" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[wbName]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[if ( in_wbName is nothing, "ProcessTransactionItem" , in_wbName )]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Set Workblock Path" sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[wbPath]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_wbPath + wbName + "\"]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[wbPath + &quot;Execution Started&quot;]" />
+    <Assign DisplayName="Get the DFE value" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[strDFECumulativeValue]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_transactionItem.SpecificContent("Cumulative value?").ToString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[strDFECumulativeValue.Trim.Contains(&quot;-&quot;)]" DisplayName="If DFE value is negative" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <ui:LogMessage DisplayName="Log Message for negative value path in process" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Follow the steps for negative value&quot;]" />
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Fulcrum Request PO/ the verfication of the data in Fulcrum" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Fulcrum\FulcrumRequestPO.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strNBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strPartenerName">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strItemsT6">[in_transactionItem.SpecificContent("Items").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strValuesT6">[in_transactionItem.SpecificContent("Values").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strQuantitiesT6">[in_transactionItem.SpecificContent("Quantities").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strRootCause">[in_transactionItem.SpecificContent("Root cause?").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerCode">[in_transactionItem.SpecificContent("Approval Code from Engineer").ToString]</InArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_strNewStringForDFETracker">[strNewStringForDFETracker]</OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_strPremises">[strPremises]</OutArgument>
+              <OutArgument x:TypeArguments="x:Double" x:Key="out_strNewCPP">[strNewCPP]</OutArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strDFEValue">[in_transactionItem.SpecificContent("Value").ToString]</InArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_strCurrentCPP">[strCurrentCPP]</OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_strProjectNumber">[strProjectNumber]</OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_strCivilOrCable">[strCivilOrCable]</OutArgument>
+              <OutArgument x:TypeArguments="x:String" x:Key="out_strDFEFulcrum">[strDFEFulcrum]</OutArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+          <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DFE Tracker to input the necessary values" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_33" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\DFETracker\DFETrackerInput.xaml">
+            <ui:InvokeWorkflowFile.Arguments>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strNBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strRegion">[in_transactionItem.SpecificContent("Region").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strDirectorApproval">[in_transactionItem.SpecificContent("Approval From").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerCode">[in_transactionItem.SpecificContent("Approval Code from Engineer").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strDFEValue">[in_transactionItem.SpecificContent("Value").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strCurrentCPP">[strCurrentCPP]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerApprovalDate">[in_transactionItem.SpecificContent("Approval Date").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strNewString">[strNewStringForDFETracker]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strNewCPP">[strNewCPP.ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strPremises">[strPremises]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strNex">[strNex]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strRequestReceived">[in_transactionItem.SpecificContent("DateOfMail").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strApprovalEngineer">[in_transactionItem.SpecificContent("Approval Date").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strPartner">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strLocation">[in_transactionItem.SpecificContent("AddressValue").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strDFEFulcrum">[strDFEFulcrum]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strWorkId">[strWorkId]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strProjectCode">[strProjectNumber]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strOldCpp">[strCurrentCPP]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strVerbalJustification">[in_transactionItem.SpecificContent("Verbal Justification").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="in_strReasonRootCause">[in_transactionItem.SpecificContent("Root cause?").ToString]</InArgument>
+            </ui:InvokeWorkflowFile.Arguments>
+          </ui:InvokeWorkflowFile>
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <If Condition="[Convert.ToDouble(strDFECumulativeValue.Replace(&quot;£&quot;,&quot;&quot;)) &lt; 5000]" DisplayName="If DFE value is &lt; 5k" sap2010:WorkflowViewState.IdRef="If_2">
+          <If.Then>
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+              <ui:LogMessage DisplayName="Log Message for value &lt; 5k path in process" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Follow the steps for value &lt;5k&quot;]" />
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Fulcrum Request PO/ the verfication of the data in Fulcrum" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_28" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Fulcrum\FulcrumRequestPO.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strPartenerName">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strItemsT6">[in_transactionItem.SpecificContent("Items").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strValuesT6">[in_transactionItem.SpecificContent("Values").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strQuantitiesT6">[in_transactionItem.SpecificContent("Quantities").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strRootCause">[in_transactionItem.SpecificContent("Root cause?").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerCode">[in_transactionItem.SpecificContent("Approval Code from Engineer").ToString]</InArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strNewStringForDFETracker">[strNewStringForDFETracker]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strPremises">[strPremises]</OutArgument>
+                  <OutArgument x:TypeArguments="x:Double" x:Key="out_strNewCPP">[strNewCPP]</OutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDFEValue">[in_transactionItem.SpecificContent("Value").ToString]</InArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strCurrentCPP">[strCurrentCPP]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strProjectNumber">[strProjectNumber]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strCivilOrCable">[strCivilOrCable]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strDFEFulcrum">[strDFEFulcrum]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strWorkId">[strWorkId]</OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <If Condition="[String.IsNullOrEmpty(in_transactionItem.SpecificContent(&quot;NEX&quot;).ToString)]" DisplayName="If Nex value is empty" sap2010:WorkflowViewState.IdRef="If_5">
+                <If.Then>
+                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_12">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="x:String" Name="strDescriptionProject" />
+                    </Sequence.Variables>
+                    <TryCatch sap2010:Annotation.AnnotationText="Surrond Oracle Login Workflow with Try catch to catch the &quot;Error login&quot; exceptiuon that Oracle might throw.&#xA;This is used as a mechanism to transform the exception in BRE, due to the unthrowing possibility of an error outside the Retry scope." DisplayName="Try catch for Oracle Login" sap2010:WorkflowViewState.IdRef="TryCatch_3">
+                      <TryCatch.Try>
+                        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Oracle Login" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_34" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Oracle\OracleLogin.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_strOracleLink">[in_strOracleLink]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_strOracleUsername">[in_strUsernameOracle]</InArgument>
+                            <InArgument x:TypeArguments="ss:SecureString" x:Key="in_strOraclePassword">[in_strscPaswword]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                      </TryCatch.Try>
+                      <TryCatch.Catches>
+                        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                          <ActivityAction x:TypeArguments="s:Exception">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                            </ActivityAction.Argument>
+                            <If Condition="[exception.Message.Trim.ToLower.Contains(&quot;e09 transaction not processed.&quot;)]" DisplayName="If exeption message is the one from Oracle" sap2010:WorkflowViewState.IdRef="If_6">
+                              <If.Then>
+                                <Throw DisplayName="Throw E09 for error Login Oracle" Exception="[new BusinessRuleException(exception.Message)]" sap2010:WorkflowViewState.IdRef="Throw_3" />
+                              </If.Then>
+                              <If.Else>
+                                <Rethrow DisplayName="Rethrow the exception to the next level" sap2010:WorkflowViewState.IdRef="Rethrow_3" />
+                              </If.Else>
+                            </If>
+                          </ActivityAction>
+                        </Catch>
+                      </TryCatch.Catches>
+                    </TryCatch>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Workflow File" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_32" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Oracle\OracleCrossView.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_strProjectNumber">[strProjectNumber]</InArgument>
+                        <OutArgument x:TypeArguments="x:String" x:Key="out_strDescriptionProjectOracle">[strDescriptionProject]</OutArgument>
+                        <OutArgument x:TypeArguments="x:String" x:Key="out_strNEXValue">[strNex]</OutArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                  </Sequence>
+                </If.Then>
+                <If.Else>
+                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_13">
+                    <ui:LogMessage DisplayName="Log Message for Nex" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;No need to get NEX from Oracle&quot;]" />
+                    <Assign DisplayName="Assign Nex value" sap2010:WorkflowViewState.IdRef="Assign_5">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:String">[strNex]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:String">[in_transactionItem.SpecificContent("NEX").ToString]</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                  </Sequence>
+                </If.Else>
+              </If>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DFE Tracker to input the necessary values" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_29" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\DFETracker\DFETrackerInput.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strRegion">[in_transactionItem.SpecificContent("Region").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDirectorApproval">[in_transactionItem.SpecificContent("Approval From").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerCode">[in_transactionItem.SpecificContent("Approval Code from Engineer").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDFEValue">[in_transactionItem.SpecificContent("Value").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strCurrentCPP">[strCurrentCPP]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerApprovalDate">[in_transactionItem.SpecificContent("Approval Date").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNewString">[strNewStringForDFETracker]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNewCPP">[strNewCPP.ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strPremises">[strPremises]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNex">[strNex]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strRequestReceived">[in_transactionItem.SpecificContent("DateOfMail").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strApprovalEngineer">[in_transactionItem.SpecificContent("Approval Date").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strPartner">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strLocation">[in_transactionItem.SpecificContent("AddressValue").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDFEFulcrum">[strDFEFulcrum]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strWorkId">[strWorkId]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strProjectCode">[strProjectNumber]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strOldCpp">[strCurrentCPP]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strVerbalJustification">[in_transactionItem.SpecificContent("Verbal Justification").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strReasonRootCause">[in_transactionItem.SpecificContent("Root cause?").ToString]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <Sequence DisplayName="Oracle" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                <TryCatch sap2010:Annotation.AnnotationText="Surrond Oracle Login Workflow with Try catch to catch the &quot;Error login&quot; exceptiuon that Oracle might throw.&#xA;This is used as a mechanism to transform the exception in BRE, due to the unthrowing possibility of an error outside the Retry scope." DisplayName="Try catch for Oracle Login" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                  <TryCatch.Try>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Oracle Login" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_21" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Oracle\OracleLogin.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_strOracleLink">[in_strOracleLink]</InArgument>
+                        <InArgument x:TypeArguments="x:String" x:Key="in_strOracleUsername">[in_strUsernameOracle]</InArgument>
+                        <InArgument x:TypeArguments="ss:SecureString" x:Key="in_strOraclePassword">[in_strscPaswword]</InArgument>
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                  </TryCatch.Try>
+                  <TryCatch.Catches>
+                    <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                      <ActivityAction x:TypeArguments="s:Exception">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                        </ActivityAction.Argument>
+                        <If Condition="[exception.Message.Trim.ToLower.Contains(&quot;e09 transaction not processed.&quot;)]" DisplayName="If exeption message is the one from Oracle" sap2010:WorkflowViewState.IdRef="If_3">
+                          <If.Then>
+                            <Throw DisplayName="Throw E09 for error Login Oracle" Exception="[new BusinessRuleException(exception.Message)]" sap2010:WorkflowViewState.IdRef="Throw_1" />
+                          </If.Then>
+                          <If.Else>
+                            <Rethrow DisplayName="Rethrow the exception to the next level" sap2010:WorkflowViewState.IdRef="Rethrow_1" />
+                          </If.Else>
+                        </If>
+                      </ActivityAction>
+                    </Catch>
+                  </TryCatch.Catches>
+                </TryCatch>
+                <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Budget Amendment menu in Oracle" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_22" UnSafe="False" WorkflowFileName="Oracle\OracleBudgetAmendment.xaml">
+                  <ui:InvokeWorkflowFile.Arguments>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_strProjectNumber">[strProjectNumber]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="in_strFulcrumMinorDevDFECost">[strFulcrumMinorDevDFECost]</InArgument>
+                  </ui:InvokeWorkflowFile.Arguments>
+                </ui:InvokeWorkflowFile>
+                <ui:AddQueueItem ServiceBaseAddress="{x:Null}" TimeoutMS="{x:Null}" sap2010:Annotation.AnnotationText="Add to Queue 3, to continue with with the steps after the approval from Oracle is received" DisplayName="Add to Queue2" sap2010:WorkflowViewState.IdRef="AddQueueItem_1" Priority="Normal" QueueType="[in_strQueueName2]">
+                  <ui:AddQueueItem.ItemInformation>
+                    <InArgument x:TypeArguments="x:String" x:Key="NBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="Project number">[strProjectNumber]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="Partner">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+                    <InArgument x:TypeArguments="x:String" x:Key="DFE Value">[in_transactionItem.SpecificContent("DFE Value").ToString]</InArgument>
+                  </ui:AddQueueItem.ItemInformation>
+                </ui:AddQueueItem>
+              </Sequence>
+            </Sequence>
+          </If.Then>
+          <If.Else>
+            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="strDescriptionProjectOracle" />
+              </Sequence.Variables>
+              <ui:LogMessage DisplayName="Log Message for value &gt; 5k path in process" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Follow the steps for value &gt;5k&quot;]" />
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Fulcrum Request PO/ the verfication of the data in Fulcrum" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_30" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Fulcrum\FulcrumRequestPO.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strPartenerName">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strItemsT6">[in_transactionItem.SpecificContent("Items").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strValuesT6">[in_transactionItem.SpecificContent("Values").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strQuantitiesT6">[in_transactionItem.SpecificContent("Quantities").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strRootCause">[in_transactionItem.SpecificContent("Root cause?").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerCode">[in_transactionItem.SpecificContent("Approval Code from Engineer").ToString]</InArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strNewStringForDFETracker">[strNewStringForDFETracker]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strPremises">[strPremises]</OutArgument>
+                  <OutArgument x:TypeArguments="x:Double" x:Key="out_strNewCPP">[strNewCPP]</OutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDFEValue">[in_transactionItem.SpecificContent("Value").ToString]</InArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strCurrentCPP">[strCurrentCPP]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strProjectNumber">[strProjectNumber]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strCivilOrCable">[strCivilOrCable]</OutArgument>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_strDFEFulcrum">[strDFEFulcrum]</OutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke DFE Tracker to input the necessary values" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_35" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\DFETracker\DFETrackerInput.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strRegion">[in_transactionItem.SpecificContent("Region").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDirectorApproval">[in_transactionItem.SpecificContent("Approval From").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerCode">[in_transactionItem.SpecificContent("Approval Code from Engineer").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDFEValue">[in_transactionItem.SpecificContent("Value").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strCurrentCPP">[strCurrentCPP]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strEngineerApprovalDate">[in_transactionItem.SpecificContent("Approval Date").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNewString">[strNewStringForDFETracker]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNewCPP">[strNewCPP.ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strPremises">[strPremises]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strNex">[strNex]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strRequestReceived">[in_transactionItem.SpecificContent("DateOfMail").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strApprovalEngineer">[in_transactionItem.SpecificContent("Approval Date").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strPartner">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strLocation">[in_transactionItem.SpecificContent("AddressValue").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strDFEFulcrum">[strDFEFulcrum]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strWorkId">[strWorkId]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strProjectCode">[strProjectNumber]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strOldCpp">[strCurrentCPP]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strVerbalJustification">[in_transactionItem.SpecificContent("Verbal Justification").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strReasonRootCause">[in_transactionItem.SpecificContent("Root cause?").ToString]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <Sequence DisplayName="Oracle" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                <TryCatch sap2010:Annotation.AnnotationText="Surrond Oracle Login Workflow with Try catch to catch the &quot;Error login&quot; exceptiuon that Oracle might throw.&#xA;This is used as a mechanism to transform the exception in BRE, due to the unthrowing possibility of an error outside the Retry scope." DisplayName="Try catch for Oracle Login" sap2010:WorkflowViewState.IdRef="TryCatch_2">
+                  <TryCatch.Try>
+                    <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Oracle Login" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_26" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Oracle\OracleLogin.xaml">
+                      <ui:InvokeWorkflowFile.Arguments>
+                        <scg:Dictionary x:TypeArguments="x:String, Argument" />
+                      </ui:InvokeWorkflowFile.Arguments>
+                    </ui:InvokeWorkflowFile>
+                  </TryCatch.Try>
+                  <TryCatch.Catches>
+                    <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+                      <ActivityAction x:TypeArguments="s:Exception">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                        </ActivityAction.Argument>
+                        <If Condition="[exception.Message.Trim.ToLower.Contains(&quot;e09 transaction not processed.&quot;)]" DisplayName="If exeption message is the one from Oracle" sap2010:WorkflowViewState.IdRef="If_4">
+                          <If.Then>
+                            <Throw DisplayName="Throw E09 for error Login Oracle" Exception="[new BusinessRuleException(exception.Message)]" sap2010:WorkflowViewState.IdRef="Throw_2" />
+                          </If.Then>
+                          <If.Else>
+                            <Rethrow DisplayName="Rethrow the exception to the next level" sap2010:WorkflowViewState.IdRef="Rethrow_2" />
+                          </If.Else>
+                        </If>
+                      </ActivityAction>
+                    </Catch>
+                  </TryCatch.Catches>
+                </TryCatch>
+              </Sequence>
+              <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke Cross View menu in Oracle" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_27" UnSafe="False" WorkflowFileName="110_11 DFE Infill v0.1 Part II Process After Approvals\Oracle\OracleCrossView.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_strProjectNumber">[strProjectNumber]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="out_strDescriptionProjectOracle">[strDescriptionProjectOracle]</InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+              </ui:InvokeWorkflowFile>
+              <ui:AddQueueItem ServiceBaseAddress="{x:Null}" TimeoutMS="{x:Null}" sap2010:Annotation.AnnotationText="Add to Queue 3, to continue with with the steps after the approval from Oracle is received" DisplayName="Add to Queue2 " sap2010:WorkflowViewState.IdRef="AddQueueItem_3" Priority="Normal" QueueType="[in_strQueueName2]">
+                <ui:AddQueueItem.ItemInformation>
+                  <InArgument x:TypeArguments="x:String" x:Key="NBU">[in_transactionItem.SpecificContent("NBU").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Project number">[strProjectNumber]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="Partner">[in_transactionItem.SpecificContent("Partner").ToString]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="DFE Value">[in_transactionItem.SpecificContent("DFE Value").ToString]</InArgument>
+                </ui:AddQueueItem.ItemInformation>
+              </ui:AddQueueItem>
+            </Sequence>
+          </If.Else>
+        </If>
+      </If.Else>
+    </If>
+    <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[wbPath + &quot;Processing transaction number: &quot; + intTransactionNumber.ToString]" />
+    <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[wbPath + &quot;Execution Ended succesfuly&quot;]" />
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="1671,60" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="1671,60" />
+      <sap2010:ViewStateData Id="LogMessage_1" sap:VirtualizedContainerService.HintSize="1671,91" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="1671,60" />
+      <sap2010:ViewStateData Id="LogMessage_4" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_15" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_33" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="336,469">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_5" sap:VirtualizedContainerService.HintSize="801,91" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_28" sap:VirtualizedContainerService.HintSize="801,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_34" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Throw_3" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Rethrow_3" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_6" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="Catch`1_3" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_3" sap:VirtualizedContainerService.HintSize="418,386">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_32" sap:VirtualizedContainerService.HintSize="418,87" />
+      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="440,637">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_7" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="336,315">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="801,785" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_29" sap:VirtualizedContainerService.HintSize="801,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_21" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Rethrow_1" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="418,386">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_22" sap:VirtualizedContainerService.HintSize="418,87" />
+      <sap2010:ViewStateData Id="AddQueueItem_1" sap:VirtualizedContainerService.HintSize="418,94">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="801,771">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="823,2105">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_6" sap:VirtualizedContainerService.HintSize="440,91" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_30" sap:VirtualizedContainerService.HintSize="440,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_35" sap:VirtualizedContainerService.HintSize="440,87" />
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_26" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Throw_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Rethrow_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,208" />
+      <sap2010:ViewStateData Id="Catch`1_2" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="418,386">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="440,510">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_27" sap:VirtualizedContainerService.HintSize="440,87" />
+      <sap2010:ViewStateData Id="AddQueueItem_3" sap:VirtualizedContainerService.HintSize="440,94">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="462,1280">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="1310,2253" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="1671,2401" />
+      <sap2010:ViewStateData Id="LogMessage_3" sap:VirtualizedContainerService.HintSize="1671,91" />
+      <sap2010:ViewStateData Id="LogMessage_2" sap:VirtualizedContainerService.HintSize="1324,91" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="1693,3218">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Process_Transaction_Item_1" sap:VirtualizedContainerService.HintSize="1733,3298" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
